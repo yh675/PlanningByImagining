@@ -1,0 +1,82 @@
+The demo code is meant to mimic the experiments run to generate Table 1 of the paper titled 
+"Planning Paths Through Unknown Space by Imagining what Lies Therein".
+
+# This code is for research purposes only
+
+# astar implementation with some inspiration from https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2
+# semantic-kitti.yaml file from 
+@inproceedings{behley2019iccv,
+    author = {J. Behley and M. Garbade and A. Milioto and J. Quenzel and S. Behnke and C. Stachniss and J. Gall},
+     title = {{SemanticKITTI: A Dataset for Semantic Scene Understanding of LiDAR Sequences}},
+ booktitle = {Proc. of the IEEE/CVF International Conf.~on Computer Vision (ICCV)},
+      year = {2019}
+}
+
+Python dependencies:
+cv2, numpy, yaml
+
+Python version:
+Code tested on python version 3.8.2
+
+Inside ../Code_Demo:
+- lidar input, inpainted, and ground truth maps are in the input, all_tests, and output directories respectively
+
+Steps to run the demo code and evaluate:
+
+1. In load_params_demo.py edit 
+- 'save_data_path' which is the root directory for the data and results, this is the path to '../Supplementary_Materials/Code_Demo/'
+- 'labels_yaml' which is the directory to the semantic-kitti.yaml file. This file is inside the directory Code_Demo.
+
+########################### run demo for trials ################################
+2. In trials_demo.py edit
+- line 15: time_step, which is the number of the image used: options of ['000045', '000150', '000285']
+- line 19: input_dir, path to the input lidar images (../input)
+- line 20: output_dir, path to the ground truth images (../output)
+- line 21: result_dir, path to the inpainted result images (../all_tests)
+- line 22: test_save_dir, path to directory where all results are saved (../test_results)
+
+3. To load start and goal locations form an existing result file
+- uncomment lines 49-50
+- edit line 49 to point to the location of the result file to load
+
+4. To generate your own start and goal locations
+- edit line 53: n_trials, which is the number of trials
+- for random start and goal locations:
+	- uncomment line 54
+- for start locations fixed in a Gaussian and random goal locations
+	- uncomment lines 56-59
+	- edit start_cent, which is the mean of the Gaussian (column, row)
+
+5. To visualize the start and goal locations:
+- uncomment line 61
+- replace resized_obs_res.copy() as desired:
+	- resized_obs_res.copy() is the inpainted obstacle map
+	- resized_obs_in.copy() is the input lidar obstacle map
+	- resized_obs_out.copy() is the ground truth obstacle map
+- start locations in red pixels, goal locations in green pixels
+
+6. To run trials for ground truth maps
+- uncomment lines 65-66 and run trials_demo.py
+- results will be saved in results.txt
+	- format is: (start_location) (goal location) (path length) (times replanned)
+	- if path length is 0, then no path is possible
+- for each trial
+	- trial_{trial#}.png will also be saved displaying the final path taken
+
+7. To run trials for lidar input or inpainted maps
+- uncomment lines 70-72
+- replace obs_map (line 70) as desired:
+	- resized_obs_res.copy() is the inpainted obstacle map
+	- resized_obs_in.copy() is the input lidar obstacle map
+- run trials_demo.py
+- results will be saved in results.txt
+	- format is: (start_location) (goal location) (path length) (times replanned)
+	- if path length is 0, then no path is possible
+- for each trial
+	- trial_{trial#}.png will also be saved displaying the final path taken
+
+########################### evaluate ################################
+8. To evaluate edit eval_demo.py
+- line 14: test_save_dir, which is the path to the results file to evaluate
+- run eval_demo.py
+- results printed to terminal
