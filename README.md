@@ -15,6 +15,6 @@ Place the pretrained network into a model_logs folder.
 @article{han2020planning,
   title={Planning Paths Through Unknown Space by Imagining What Lies Therein},
   author={Han, Yutao and Banfi,Jacopo and Campbell, Mark},
-  journal={arXiv preprint arXiv:},
+  journal={arXiv preprint arXiv:2011.07316},
   year={2020}
 }
